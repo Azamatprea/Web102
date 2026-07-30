@@ -56,6 +56,7 @@ export default function Chat() {
       console.error('Error sending message:', error)
     } else {
       setNewMessage('')
+      fetchMessages()
     }
   }
 
