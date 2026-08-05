@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../client'
 import { Send, Hash } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { useAuth } from '../context/AuthContext'
 
 export default function Chat() {
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
-  const [username, setUsername] = useState('Student_' + Math.floor(Math.random() * 1000))
+  const { username, setUsername } = useAuth()
   const messagesEndRef = useRef(null)
 
   useEffect(() => {

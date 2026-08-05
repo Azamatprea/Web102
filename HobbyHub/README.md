@@ -42,10 +42,14 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Web app implements pseudo-authentication
-- [ ] Users can repost a previous post by referencing its post ID. On the post page of the new post
-- [ ] Users can customize the interface
-- [ ] Users can add more characterics to their posts
+- [x] Web app implements pseudo-authentication
+  - Users get a random display name on first visit (no password), editable anytime from the profile icon in the navbar. It's stored in `localStorage` and used to tag posts/comments/chat messages. Editing and deleting a post is only allowed for the user who created it.
+- [x] Users can repost a previous post by referencing its post ID. On the post page of the new post
+  - The create-post form has an optional "Repost of Post ID" field, and every post page has a one-click "Repost" button. The resulting post shows a banner linking back to the original.
+- [x] Users can customize the interface
+  - A palette icon in the navbar opens a settings popover with a dark/light mode toggle and 5 accent color choices, persisted in `localStorage`.
+- [x] Users can add more characterics to their posts
+  - Posts can be tagged with a category (General, News, Sports, Clubs, Announcements, Question), shown on the post page and filterable from the home feed.
 - [x] Web app displays a loading animation whenever data is being fetched
 
 The following **additional** features are implemented:

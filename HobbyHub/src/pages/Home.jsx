@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Search, Loader, ListFilter } from 'lucide-react'
+import { Search, ListFilter } from 'lucide-react'
 import { supabase } from '../client'
 import PostCard from '../components/PostCard'
+import { CATEGORIES } from './CreatePost'
 
 export default function Home() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('created_at')
+  const [category, setCategory] = useState('All')
 
   useEffect(() => {
     fetchPosts()
@@ -17,7 +19,7 @@ export default function Home() {
     setLoading(true)
     const { data, error } = await supabase
       .from('posts')
-      .select('id, created_at, title, upvotes')
+      .select('id, created_at, title, upvotes, category')
       .order(sortBy, { ascending: false })
 
     if (error) {
@@ -28,9 +30,9 @@ export default function Home() {
     setLoading(false)
   }
 
-  const filteredPosts = posts.filter(post => 
-    post.title.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredPosts = posts
+    .filter(post => post.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter(post => category === 'All' || (post.category || 'General') === category)
 
   return (
     <div className="animate-fade-in">
@@ -47,19 +49,31 @@ export default function Home() {
         </div>
         <div className="sort-controls">
           <ListFilter size={20} color="var(--text-muted)" />
-          <button 
+          <button
             className={`btn ${sortBy === 'created_at' ? 'btn-primary' : 'btn-outline'}`}
             onClick={() => setSortBy('created_at')}
           >
             Newest
           </button>
-          <button 
+          <button
             className={`btn ${sortBy === 'upvotes' ? 'btn-primary' : 'btn-outline'}`}
             onClick={() => setSortBy('upvotes')}
           >
             Most Popular
           </button>
         </div>
+      </div>
+
+      <div className="category-filter-row">
+        {['All', ...CATEGORIES].map(c => (
+          <button
+            key={c}
+            className={`category-chip ${category === c ? 'active' : ''}`}
+            onClick={() => setCategory(c)}
+          >
+            {c}
+          </button>
+        ))}
       </div>
 
       {loading ? (
